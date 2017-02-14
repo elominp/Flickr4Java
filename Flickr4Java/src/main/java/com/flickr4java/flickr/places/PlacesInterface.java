@@ -1,6 +1,7 @@
 package com.flickr4java.flickr.places;
 
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.Response;
 import com.flickr4java.flickr.Transport;
 import com.flickr4java.flickr.photos.SearchParameters;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Lookup Flickr Places.
@@ -160,7 +162,14 @@ public class PlacesInterface {
 
         parameters.put("query", query);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -240,7 +249,14 @@ public class PlacesInterface {
         parameters.put("lon", "" + Double.toString(longitude));
         parameters.put("accuracy", "" + Integer.toString(accuracy));
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -285,7 +301,14 @@ public class PlacesInterface {
             parameters.put("woe_id", woeId);
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -327,7 +350,14 @@ public class PlacesInterface {
             parameters.put("woe_id", woeId);
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -352,7 +382,14 @@ public class PlacesInterface {
 
         parameters.put("url", url);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -374,7 +411,14 @@ public class PlacesInterface {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("method", METHOD_GET_PLACETYPES);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -422,7 +466,14 @@ public class PlacesInterface {
             parameters.put("woe_id", woeId);
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -486,7 +537,14 @@ public class PlacesInterface {
             parameters.put("date", ((DateFormat) SearchParameters.DATE_FORMATS.get()).format(date));
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -535,7 +593,14 @@ public class PlacesInterface {
         parameters.put("place_type", intPlaceTypeToString(placeType));
         parameters.put("bbox", bbox);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -590,7 +655,14 @@ public class PlacesInterface {
             parameters.put("contacts", contacts);
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -681,7 +753,14 @@ public class PlacesInterface {
             parameters.put("max_taken_date", ((DateFormat) SearchParameters.MYSQL_DATE_FORMATS.get()).format(maxTakenDate));
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -750,7 +829,14 @@ public class PlacesInterface {
             parameters.put("max_taken_date", ((DateFormat) SearchParameters.MYSQL_DATE_FORMATS.get()).format(maxTakenDate));
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -782,7 +868,14 @@ public class PlacesInterface {
 
         parameters.put("place_id", placeId);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -809,7 +902,14 @@ public class PlacesInterface {
 
         parameters.put("url", flickrPlacesUrl);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -864,7 +964,14 @@ public class PlacesInterface {
             parameters.put("max_taken_date", ((DateFormat) SearchParameters.MYSQL_DATE_FORMATS.get()).format(maxTakenDate));
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }

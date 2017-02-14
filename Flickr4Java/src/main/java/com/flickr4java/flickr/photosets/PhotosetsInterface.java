@@ -5,6 +5,7 @@ package com.flickr4java.flickr.photosets;
 
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.Response;
 import com.flickr4java.flickr.Transport;
 import com.flickr4java.flickr.people.User;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Interface for working with photosets.
@@ -94,7 +96,14 @@ public class PhotosetsInterface {
         parameters.put("photoset_id", photosetId);
         parameters.put("photo_id", photoId);
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -120,7 +129,14 @@ public class PhotosetsInterface {
         parameters.put("description", description);
         parameters.put("primary_photo_id", primaryPhotoId);
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -144,7 +160,14 @@ public class PhotosetsInterface {
 
         parameters.put("photoset_id", photosetId);
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -171,7 +194,14 @@ public class PhotosetsInterface {
             parameters.put("description", description);
         }
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -196,7 +226,14 @@ public class PhotosetsInterface {
         parameters.put("primary_photo_id", primaryPhotoId);
         parameters.put("photo_ids", StringUtilities.join(photoIds, ","));
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -221,7 +258,14 @@ public class PhotosetsInterface {
         parameters.put("photo_id", photoId);
         parameters.put("photoset_id", photosetId);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -262,7 +306,14 @@ public class PhotosetsInterface {
 
         parameters.put("photoset_id", photosetId);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -368,7 +419,14 @@ public class PhotosetsInterface {
             parameters.put("primary_photo_extras", primaryPhotoExtras);
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -451,7 +509,14 @@ public class PhotosetsInterface {
         parameters.put("per_page", String.valueOf(1));
         parameters.put("page", String.valueOf(1));
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -508,7 +573,14 @@ public class PhotosetsInterface {
             parameters.put(Extras.KEY_EXTRAS, StringUtilities.join(extras, ","));
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -571,7 +643,14 @@ public class PhotosetsInterface {
 
         parameters.put("photoset_ids", StringUtilities.join(photosetIds, ","));
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -593,7 +672,14 @@ public class PhotosetsInterface {
         parameters.put("photoset_id", photosetId);
         parameters.put("photo_id", photoId);
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -615,7 +701,14 @@ public class PhotosetsInterface {
         parameters.put("photoset_id", photosetId);
         parameters.put("photo_ids", photoIds);
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -637,7 +730,14 @@ public class PhotosetsInterface {
         parameters.put("photoset_id", photosetId);
         parameters.put("photo_ids", photoIds);
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -659,7 +759,14 @@ public class PhotosetsInterface {
         parameters.put("photoset_id", photosetId);
         parameters.put("photo_id", photoId);
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }

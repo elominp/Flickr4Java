@@ -1,6 +1,7 @@
 package com.flickr4java.flickr.photos.geo;
 
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.Response;
 import com.flickr4java.flickr.Transport;
 import com.flickr4java.flickr.photos.GeoData;
@@ -16,6 +17,7 @@ import org.w3c.dom.NodeList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Access to the flickr.photos.geo methods.
@@ -70,7 +72,14 @@ public class GeoInterface {
         parameters.put("method", METHOD_GET_LOCATION);
         parameters.put("photo_id", photoId);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -107,7 +116,14 @@ public class GeoInterface {
         parameters.put("method", METHOD_GET_PERMS);
         parameters.put("photo_id", photoId);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -138,7 +154,14 @@ public class GeoInterface {
         parameters.put("photo_id", photoId);
 
         // Note: This method requires an HTTP POST request.
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         // This method has no specific response - It returns an empty sucess response
         // if it completes without error.
         if (response.isError()) {
@@ -172,7 +195,14 @@ public class GeoInterface {
         }
 
         // Note: This method requires an HTTP POST request.
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         // This method has no specific response - It returns an empty sucess response
         // if it completes without error.
         if (response.isError()) {
@@ -201,7 +231,14 @@ public class GeoInterface {
         parameters.put("is_family", perms.isFamily() ? "1" : "0");
 
         // Note: This method requires an HTTP POST request.
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         // This method has no specific response - It returns an empty sucess response
         // if it completes without error.
         if (response.isError()) {
@@ -238,7 +275,14 @@ public class GeoInterface {
         parameters.put("accuracy", Integer.toString(location.getAccuracy()));
 
         // Note: This method requires an HTTP POST request.
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         // This method has no specific response - It returns an empty sucess response
         // if it completes without error.
         if (response.isError()) {
@@ -269,7 +313,14 @@ public class GeoInterface {
         }
 
         // Note: This method requires an HTTP POST request.
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         // This method has no specific response - It returns an empty sucess response
         // if it completes without error.
         if (response.isError()) {
@@ -305,7 +356,14 @@ public class GeoInterface {
         parameters.put("lat", Float.toString(location.getLatitude()));
         parameters.put("lon", Float.toString(location.getLongitude()));
         parameters.put("accuracy", Integer.toString(location.getAccuracy()));
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -344,7 +402,14 @@ public class GeoInterface {
         parameters.put("context", "" + context);
 
         // Note: This method requires an HTTP POST request.
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         // This method has no specific response - It returns an empty sucess response
         // if it completes without error.
         if (response.isError()) {

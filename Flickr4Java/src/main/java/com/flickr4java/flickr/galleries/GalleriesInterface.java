@@ -4,6 +4,7 @@
 package com.flickr4java.flickr.galleries;
 
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.Response;
 import com.flickr4java.flickr.Transport;
 import com.flickr4java.flickr.people.User;
@@ -20,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author acaplan
@@ -90,7 +92,14 @@ public class GalleriesInterface {
             parameters.put("page", String.valueOf(page));
         }
 
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -133,7 +142,14 @@ public class GalleriesInterface {
         parameters.put("photo_id", photoId);
         parameters.put("comment", strComment);
 
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -145,7 +161,14 @@ public class GalleriesInterface {
         parameters.put("title", strTitle);
         parameters.put("description", strDescription);
 
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -158,7 +181,14 @@ public class GalleriesInterface {
         parameters.put("photo_id", strPhotoId);
         parameters.put("comment", strComment);
 
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -171,7 +201,14 @@ public class GalleriesInterface {
         parameters.put("primary_photo_id", strPrimaryPhotoId);
         parameters.put("photo_ids", strPhotoIds);
 
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -182,7 +219,14 @@ public class GalleriesInterface {
         parameters.put("method", METHOD_GET_INFO);
         parameters.put("gallery_id", strGalleryId);
 
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -225,7 +269,14 @@ public class GalleriesInterface {
             parameters.put("primary_photo_id ", primaryPhotoId);
         }
 
-        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -284,7 +335,14 @@ public class GalleriesInterface {
             parameters.put("page", String.valueOf(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -347,7 +405,14 @@ public class GalleriesInterface {
             parameters.put("page", String.valueOf(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }

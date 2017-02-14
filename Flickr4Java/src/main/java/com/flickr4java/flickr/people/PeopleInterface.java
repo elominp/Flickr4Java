@@ -4,6 +4,7 @@
 package com.flickr4java.flickr.people;
 
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.Response;
 import com.flickr4java.flickr.Transport;
 import com.flickr4java.flickr.groups.Group;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Interface for finding Flickr users.
@@ -85,7 +87,14 @@ public class PeopleInterface {
 
         parameters.put("find_email", email);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -112,7 +121,14 @@ public class PeopleInterface {
 
         parameters.put("username", username);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -139,7 +155,14 @@ public class PeopleInterface {
 
         parameters.put("user_id", userId);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -208,7 +231,14 @@ public class PeopleInterface {
 
         parameters.put("user_id", userId);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -266,7 +296,14 @@ public class PeopleInterface {
             parameters.put(Extras.KEY_EXTRAS, StringUtilities.join(extras, ","));
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -296,7 +333,14 @@ public class PeopleInterface {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("method", METHOD_GET_UPLOAD_STATUS);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -366,7 +410,14 @@ public class PeopleInterface {
             parameters.put(Extras.KEY_EXTRAS, StringUtilities.join(extras, ","));
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -405,7 +456,14 @@ public class PeopleInterface {
             parameters.put("page", "" + page);
         }
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -519,7 +577,14 @@ public class PeopleInterface {
         parameters.put("method", METHOD_GET_GROUPS);
         parameters.put("user_id", userId);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -553,7 +618,14 @@ public class PeopleInterface {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("method", METHOD_GET_LIMITS);
 
-        Response response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }

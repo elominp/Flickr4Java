@@ -1,6 +1,7 @@
 package com.flickr4java.flickr.photos.upload;
 
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.Response;
 import com.flickr4java.flickr.Transport;
 
@@ -13,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Checks the status of asynchronous photo upload tickets.
@@ -62,7 +64,14 @@ public class UploadInterface {
         }
         parameters.put("tickets", sb.toString());
 
-        Response response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret);
+        Response response = null;
+        try {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }

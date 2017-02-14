@@ -4,6 +4,7 @@
 package com.flickr4java.flickr;
 
 import java.util.Map;
+import java.util.concurrent.Future;
 
 /**
  * The abstract Transport class provides a common interface for transporting requests to the Flickr servers. Flickr offers several transport methods including
@@ -91,7 +92,7 @@ public abstract class Transport {
      * @return The Response
      * @throws FlickrException
      */
-    public abstract Response get(String path, Map<String, Object> parameters, String apiKey, String sharedSecret) throws FlickrException;
+    public abstract Future<Response> get(String path, Map<String, Object> parameters, String apiKey, String sharedSecret) throws FlickrException;
 
     /**
      * Invoke an HTTP POST request on a remote host.
@@ -105,7 +106,7 @@ public abstract class Transport {
      * @return The Response object
      * @throws FlickrException
      */
-    public abstract Response post(String path, Map<String, Object> parameters, String apiKey, String sharedSecret, boolean multipart) throws FlickrException;
+    public abstract Future<Response> post(String path, Map<String, Object> parameters, String apiKey, String sharedSecret, boolean multipart) throws FlickrException;
 
     /**
      * Invoke an HTTP POST request on a remote host.
@@ -119,7 +120,7 @@ public abstract class Transport {
      * @return The Response object
      * @throws FlickrException
      */
-    public Response post(String path, Map<String, Object> parameters, String apiKey, String sharedSecret) throws FlickrException {
+    public Future<Response> post(String path, Map<String, Object> parameters, String apiKey, String sharedSecret) throws FlickrException {
 
         return post(path, parameters, apiKey, sharedSecret, false);
     }
@@ -136,7 +137,7 @@ public abstract class Transport {
      * @return The Response
      * @throws FlickrException
      */
-    public abstract Response getNonOAuth(String path, Map<String, String> parameters) throws FlickrException;
+    public abstract Future<Response> getNonOAuth(String path, Map<String, String> parameters) throws FlickrException;
 
     public void setResponseClass(Class<?> responseClass) {
         if (responseClass == null) {

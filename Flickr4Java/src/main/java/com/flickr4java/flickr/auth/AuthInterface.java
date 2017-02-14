@@ -6,6 +6,7 @@ package com.flickr4java.flickr.auth;
 
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.Response;
 import com.flickr4java.flickr.Transport;
 import com.flickr4java.flickr.people.User;
@@ -189,7 +190,14 @@ public class AuthInterface {
         // This method call must be signed using Flickr (not OAuth) style signing
         parameters.put("api_sig", getSignature(sharedSecret, parameters));
 
-        Response response = transportAPI.getNonOAuth(transportAPI.getPath(), parameters);
+        Response response = null;
+        try {
+            response = transportAPI.getNonOAuth(transportAPI.getPath(), parameters).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -216,7 +224,14 @@ public class AuthInterface {
         // This method call must be signed using Flickr (not OAuth) style signing
         parameters.put("api_sig", getSignature(sharedSecret, parameters));
 
-        Response response = transportAPI.getNonOAuth(transportAPI.getPath(), parameters);
+        Response response = null;
+        try {
+            response = transportAPI.getNonOAuth(transportAPI.getPath(), parameters).get();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
