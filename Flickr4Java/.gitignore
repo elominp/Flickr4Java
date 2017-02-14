@@ -11,3 +11,8 @@ Flickr4Java.iws
 .project
 .settings/
 bin/
+.idea
+gradlew
+gradlew.bat
+gradle
+local.properties
