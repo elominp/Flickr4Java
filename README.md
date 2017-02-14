@@ -2,7 +2,7 @@
 
 ### Introduction
 
-__Note:__ This API has been forked from [FlickrJ at Sourceforge](http://flickrj.sourceforge.net/).
+__Note:__ This API has been forked from [Flickr4Java @boncey](https://github.com/boncey/Flickr4Java) which is forked itself from [FlickrJ at Sourceforge](http://flickrj.sourceforge.net/).
 
 This is a Java API which wraps the [REST-based Flickr API](http://www.flickr.com/services/api/).
 
