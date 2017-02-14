@@ -1,18 +1,20 @@
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.REST;
 import com.flickr4java.flickr.auth.Auth;
 import com.flickr4java.flickr.auth.AuthInterface;
 import com.flickr4java.flickr.auth.Permission;
 import com.flickr4java.flickr.util.IOUtilities;
 
-import org.scribe.model.Token;
-import org.scribe.model.Verifier;
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuth1RequestToken;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Demonstrates the authentication-process.
@@ -43,7 +45,14 @@ public class AuthExample {
 
         Scanner scanner = new Scanner(System.in);
 
-        Token token = authInterface.getRequestToken();
+        OAuth1RequestToken token = null;
+        try {
+            token = authInterface.getRequestToken();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
         System.out.println("token: " + token);
 
         String url = authInterface.getAuthorizationUrl(token, Permission.DELETE);
@@ -55,14 +64,14 @@ public class AuthExample {
         String tokenKey = scanner.nextLine();
         scanner.close();
 
-        Token requestToken = authInterface.getAccessToken(token, new Verifier(tokenKey));
+        OAuth1AccessToken accessToken = authInterface.getAccessToken(token, tokenKey);
         System.out.println("Authentication success");
 
-        Auth auth = authInterface.checkToken(requestToken);
+        Auth auth = authInterface.checkToken(accessToken);
 
         // This token can be used until the user revokes it.
-        System.out.println("Token: " + requestToken.getToken());
-        System.out.println("Secret: " + requestToken.getSecret());
+        System.out.println("Token: " + accessToken.getToken());
+        System.out.println("Secret: " + accessToken.getTokenSecret());
         System.out.println("nsid: " + auth.getUser().getId());
         System.out.println("Realname: " + auth.getUser().getRealName());
         System.out.println("Username: " + auth.getUser().getUsername());

@@ -1,5 +1,6 @@
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.REST;
 import com.flickr4java.flickr.RequestContext;
 // import com.flickr4java.flickr.Transport;
@@ -24,8 +25,9 @@ import com.flickr4java.flickr.util.AuthStore;
 import com.flickr4java.flickr.util.FileAuthStore;
 
 import org.apache.log4j.Logger;
-import org.scribe.model.Token;
-import org.scribe.model.Verifier;
+
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuth1RequestToken;
 import org.xml.sax.SAXException;
 
 // import java.io.BufferedInputStream;
@@ -52,6 +54,7 @@ import java.util.Scanner;
 // import java.io.IOException;
 // import java.io.InputStream;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 // import com.flickr4java.flickr.tags.Tag;
 
@@ -180,10 +183,17 @@ public class UploadPhoto {
 
     private void authorize() throws IOException, SAXException, FlickrException {
         AuthInterface authInterface = flickr.getAuthInterface();
-        Token accessToken = authInterface.getRequestToken();
+        OAuth1RequestToken requestToken = null;
+        try {
+            requestToken = authInterface.getRequestToken();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
 
         // Try with DELETE permission. At least need write permission for upload and add-to-set.
-        String url = authInterface.getAuthorizationUrl(accessToken, Permission.DELETE);
+        String url = authInterface.getAuthorizationUrl(requestToken, Permission.DELETE);
         System.out.println("Follow this URL to authorise yourself on Flickr");
         System.out.println(url);
         System.out.println("Paste in the token it gives you:");
@@ -192,9 +202,9 @@ public class UploadPhoto {
         Scanner scanner = new Scanner(System.in);
         String tokenKey = scanner.nextLine();
 
-        Token requestToken = authInterface.getAccessToken(accessToken, new Verifier(tokenKey));
+        OAuth1AccessToken accessToken = authInterface.getAccessToken(requestToken, tokenKey);
 
-        Auth auth = authInterface.checkToken(requestToken);
+        Auth auth = authInterface.checkToken(accessToken);
         RequestContext.getRequestContext().setAuth(auth);
         this.authStore.store(auth);
         scanner.close();

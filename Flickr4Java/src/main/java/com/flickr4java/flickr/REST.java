@@ -10,12 +10,13 @@ import com.flickr4java.flickr.util.IOUtilities;
 import com.flickr4java.flickr.util.UrlUtilities;
 
 import org.apache.log4j.Logger;
-import org.scribe.builder.ServiceBuilder;
-import org.scribe.builder.api.FlickrApi;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.oauth.OAuthService;
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.apis.FlickrApi;
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuthRequest;
+import com.github.scribejava.core.model.Token;
+import com.github.scribejava.core.model.Verb;
+import com.github.scribejava.core.oauth.OAuthService;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -32,6 +33,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -157,9 +159,9 @@ public class REST extends Transport {
         RequestContext requestContext = RequestContext.getRequestContext();
         Auth auth = requestContext.getAuth();
         if (auth != null) {
-            Token requestToken = new Token(auth.getToken(), auth.getTokenSecret());
+            OAuth1AccessToken accessToken = new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret());
             OAuthService service = createOAuthService(parameters, apiKey, sharedSecret);
-            service.signRequest(requestToken, request);
+            service.signRequest(accessToken, request);
         } else {
             // For calls that do not require authorization e.g. flickr.people.findByUsername which could be the
             // first call if the user did not supply the user-id (i.e. nsid).
@@ -172,7 +174,18 @@ public class REST extends Transport {
             logger.debug("GET: " + request.getCompleteUrl());
         }
         setTimeouts(request);
-        org.scribe.model.Response scribeResponse = request.send();
+        OAuthService service = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret).build(FlickrApi.instance());
+        service.signRequest(new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret()), request);
+        com.github.scribejava.core.model.Response scribeResponse = null;
+        try {
+            scribeResponse = service.execute(request);
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (IOException e) {
+            throw new FlickrRuntimeException(e);
+        }
 
         try {
 
@@ -277,15 +290,15 @@ public class REST extends Transport {
         RequestContext requestContext = RequestContext.getRequestContext();
         Auth auth = requestContext.getAuth();
         if (auth != null) {
-            Token requestToken = new Token(auth.getToken(), auth.getTokenSecret());
+            Token accessToken = new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret());
             OAuthService service = createOAuthService(parameters, apiKey, sharedSecret);
-            service.signRequest(requestToken, request);
+            service.signRequest(accessToken, request);
         }
 
         if (multipart) {
             // Ensure all parameters (including oauth) are added to payload so signature matches
             parameters.putAll(request.getOauthParameters());
-            request.addPayload(buildMultipartBody(parameters, getMultipartBoundary()));
+            request.setPayload(buildMultipartBody(parameters, getMultipartBoundary()));
         }
 
         if (proxyAuth) {
@@ -296,7 +309,19 @@ public class REST extends Transport {
             logger.debug("POST: " + request.getCompleteUrl());
         }
 
-        org.scribe.model.Response scribeResponse = request.send();
+        setTimeouts(request);
+        OAuthService service = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret).build(FlickrApi.instance());
+        service.signRequest(new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret()), request);
+        com.github.scribejava.core.model.Response scribeResponse = null;
+        try {
+            scribeResponse = service.execute(request);
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (IOException e) {
+            throw new FlickrRuntimeException(e);
+        }
 
         try {
             com.flickr4java.flickr.Response response = null;
@@ -331,12 +356,12 @@ public class REST extends Transport {
      * @return
      */
     private OAuthService createOAuthService(Map<String, Object> parameters, String apiKey, String sharedSecret) {
-        ServiceBuilder serviceBuilder = new ServiceBuilder().provider(FlickrApi.class).apiKey(apiKey).apiSecret(sharedSecret);
+        ServiceBuilder serviceBuilder = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret);
         if (Flickr.debugRequest) {
             serviceBuilder = serviceBuilder.debug();
         }
 
-        return serviceBuilder.build();
+        return serviceBuilder.build(FlickrApi.instance());
     }
 
     /**
@@ -449,12 +474,13 @@ public class REST extends Transport {
     }
 
     private void setTimeouts(OAuthRequest request) {
-        if (connectTimeoutMs != null) {
+        // TODO : Need to handle timeouts when bringing future as scribejava now use modern concurrency
+        /* if (connectTimeoutMs != null) {
             request.setConnectTimeout(connectTimeoutMs, TimeUnit.MILLISECONDS);
         }
         if (readTimeoutMs != null) {
             request.setReadTimeout(readTimeoutMs, TimeUnit.MILLISECONDS);
-        }
+        } */
     }
 
     public void setConnectTimeoutMs(Integer connectTimeoutMs) {

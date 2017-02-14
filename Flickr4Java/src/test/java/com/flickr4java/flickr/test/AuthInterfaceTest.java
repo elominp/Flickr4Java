@@ -13,11 +13,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.scribe.model.Token;
-import org.scribe.model.Verifier;
+
+import com.flickr4java.flickr.FlickrRuntimeException;
+import com.github.scribejava.core.model.OAuth1AccessToken;
+import com.github.scribejava.core.model.OAuth1RequestToken;
 
 import com.flickr4java.flickr.FlickrException;
 import com.flickr4java.flickr.auth.Auth;
@@ -36,11 +39,18 @@ public class AuthInterfaceTest extends Flickr4JavaTest {
 
         AuthInterface authInterface = flickr.getAuthInterface();
 
-        Token requestToken = authInterface.getRequestToken();
+        OAuth1RequestToken requestToken = null;
+        try {
+            requestToken = authInterface.getRequestToken();
+        } catch (InterruptedException e) {
+            throw new FlickrRuntimeException(e);
+        } catch (ExecutionException e) {
+            throw new FlickrRuntimeException(e);
+        }
 
         assertNotNull(requestToken);
         assertNotNull(requestToken.getToken());
-        assertNotNull(requestToken.getSecret());
+        assertNotNull(requestToken.getTokenSecret());
         assertTrue(requestToken.getRawResponse().contains("oauth_callback_confirmed=true"));
 
         String url = authInterface.getAuthorizationUrl(requestToken, Permission.READ);
@@ -66,17 +76,16 @@ public class AuthInterfaceTest extends Flickr4JavaTest {
 
         assertNotNull(code);
 
-        Verifier verifier = new Verifier(code);
-        Token accessToken = authInterface.getAccessToken(requestToken, verifier);
+        OAuth1AccessToken accessToken = authInterface.getAccessToken(requestToken, code);
 
         assertNotNull(accessToken);
         assertNotNull(accessToken.getToken());
-        assertNotNull(accessToken.getSecret());
+        assertNotNull(accessToken.getTokenSecret());
 
         Auth checkedAuth = authInterface.checkToken(accessToken);
         assertNotNull(checkedAuth);
         assertEquals(accessToken.getToken(), checkedAuth.getToken());
-        assertEquals(accessToken.getSecret(), checkedAuth.getTokenSecret());
+        assertEquals(accessToken.getTokenSecret(), checkedAuth.getTokenSecret());
         assertEquals(Permission.READ, checkedAuth.getPermission());
         assertNotNull(checkedAuth.getUser());
         assertNotNull(checkedAuth.getUser().getUsername());
@@ -94,10 +103,10 @@ public class AuthInterfaceTest extends Flickr4JavaTest {
         System.out.print(">>");
         String flickrAuthToken = in.nextLine();
 
-        Token oAuthToken = authInterface.exchangeAuthToken(flickrAuthToken);
+        OAuth1AccessToken oAuthToken = authInterface.exchangeAuthToken(flickrAuthToken);
 
         assertNotNull(oAuthToken);
         assertNotNull(oAuthToken.getToken());
-        assertNotNull(oAuthToken.getSecret());
+        assertNotNull(oAuthToken.getTokenSecret());
     }
 }
