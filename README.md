@@ -21,11 +21,6 @@ For example, to send a test ping to the Flickr service:
 
 __Please note:__ this library is not thread safe.
 
-###Setup for gradle
-```gradle
-  compile 'com.aetrion.flickr:flickrapi:1.1'
-  ```
-
 ### Development and contributing
 
 Please fork from the `develop` branch as that will make merging in easier.
@@ -38,21 +33,5 @@ An API key is required to use this API.  You can [request one on Flickr](http://
 
 #### Required libraries
 
-- [scribe-java (v.1.3.2 onwards)](https://github.com/fernandezpablo85/scribe-java/wiki/Getting-Started) (required for the OAuth functionality).
+- [scribe-java (v.1.3.2 onwards)]('https://github.com/scribejava/scribejava') (required for the OAuth functionality).
 - [log4j](http://www.apache.org/dyn/closer.cgi/logging/log4j/1.2.17/log4j-1.2.17.zip) (runtime dependency for logging)
-
-### Download
-
-[Download the latest version from bintray](https://bintray.com/boncey/Flickr4Java/Flickr4Java).
-
-
-### Maven
-
-    <dependency>
-      <groupId>com.flickr4java</groupId>
-      <artifactId>flickr4java</artifactId>
-      <version>2.16</version>
-    </dependency>
-
-Flickr4Java is now available on Maven Central so the above settings should be all you need (it used to only be available on [JCenter](https://bintray.com/bintray/jcenter).
-
