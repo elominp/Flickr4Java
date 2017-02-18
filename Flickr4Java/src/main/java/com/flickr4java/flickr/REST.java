@@ -179,7 +179,7 @@ public class REST extends Transport {
         if (Flickr.debugRequest) {
             logger.debug("GET: " + request.getCompleteUrl());
         }
-        setTimeouts(request);
+
         final OAuthService service = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret).build(FlickrApi.instance());
         service.signRequest(new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret()), request);
 
@@ -335,7 +335,6 @@ public class REST extends Transport {
             logger.debug("POST: " + request.getCompleteUrl());
         }
 
-        setTimeouts(request);
         final OAuthService service = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret).build(FlickrApi.instance());
         service.signRequest(new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret()), request);
 
@@ -505,16 +504,6 @@ public class REST extends Transport {
         if (readTimeoutMs != null) {
             conn.setReadTimeout(readTimeoutMs);
         }
-    }
-
-    private void setTimeouts(OAuthRequest request) {
-        // TODO : Need to handle timeouts when bringing future as scribejava now use modern concurrency
-        /* if (connectTimeoutMs != null) {
-            request.setConnectTimeout(connectTimeoutMs, TimeUnit.MILLISECONDS);
-        }
-        if (readTimeoutMs != null) {
-            request.setReadTimeout(readTimeoutMs, TimeUnit.MILLISECONDS);
-        } */
     }
 
     public void setConnectTimeoutMs(Integer connectTimeoutMs) {

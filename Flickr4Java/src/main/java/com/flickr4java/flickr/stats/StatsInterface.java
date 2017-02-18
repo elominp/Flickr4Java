@@ -144,7 +144,7 @@ public class StatsInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -340,7 +340,7 @@ public class StatsInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -372,7 +372,7 @@ public class StatsInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -398,7 +398,7 @@ public class StatsInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -446,7 +446,7 @@ public class StatsInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -493,7 +493,7 @@ public class StatsInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {

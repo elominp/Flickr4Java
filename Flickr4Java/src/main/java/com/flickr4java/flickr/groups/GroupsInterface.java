@@ -79,7 +79,7 @@ public class GroupsInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();} catch (InterruptedException e) {
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();} catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
             throw new FlickrRuntimeException(e);
@@ -138,7 +138,7 @@ public class GroupsInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -244,7 +244,7 @@ public class GroupsInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {

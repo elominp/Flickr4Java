@@ -58,7 +58,7 @@ public class PandaInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -113,7 +113,7 @@ public class PandaInterface {
 
         Response response = null;
         try {
-            response = transportAPI.get(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transportAPI.post(transportAPI.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
