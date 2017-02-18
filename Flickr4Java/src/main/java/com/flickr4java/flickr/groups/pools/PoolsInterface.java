@@ -95,7 +95,7 @@ public class PoolsInterface {
         parameters.put("photo_id", photoId);
         parameters.put("group_id", groupId);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -130,7 +130,7 @@ public class PoolsInterface {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("method", METHOD_GET_GROUPS);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -208,7 +208,7 @@ public class PoolsInterface {
             parameters.put(Extras.KEY_EXTRAS, sb.toString());
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }

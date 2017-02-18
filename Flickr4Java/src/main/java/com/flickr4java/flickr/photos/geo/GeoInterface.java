@@ -70,7 +70,7 @@ public class GeoInterface {
         parameters.put("method", METHOD_GET_LOCATION);
         parameters.put("photo_id", photoId);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -107,7 +107,7 @@ public class GeoInterface {
         parameters.put("method", METHOD_GET_PERMS);
         parameters.put("photo_id", photoId);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -305,7 +305,7 @@ public class GeoInterface {
         parameters.put("lat", Float.toString(location.getLatitude()));
         parameters.put("lon", Float.toString(location.getLongitude()));
         parameters.put("accuracy", Integer.toString(location.getAccuracy()));
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }

@@ -36,7 +36,6 @@ public class GalleriesInterfaceTest extends Flickr4JavaTest {
         assertFalse(galleries.isEmpty());
     }
 
-    @Ignore
     @Test
     public void testCreate() throws FlickrException {
         GalleriesInterface iface = flickr.getGalleriesInterface();

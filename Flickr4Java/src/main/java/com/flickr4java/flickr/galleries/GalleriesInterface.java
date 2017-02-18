@@ -4,6 +4,7 @@
 package com.flickr4java.flickr.galleries;
 
 import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.FlickrRuntimeException;
 import com.flickr4java.flickr.Response;
 import com.flickr4java.flickr.Transport;
 import com.flickr4java.flickr.people.User;
@@ -20,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author acaplan
@@ -218,12 +220,12 @@ public class GalleriesInterface {
      */
     public Gallery create(String strTitle, String strDescription, String primaryPhotoId) throws FlickrException {
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("method", METHOD_CREATE);
-        parameters.put("title", strTitle);
         parameters.put("description", strDescription);
+        parameters.put("method", METHOD_CREATE);
         if (primaryPhotoId != null) {
             parameters.put("primary_photo_id ", primaryPhotoId);
         }
+        parameters.put("title", strTitle);
 
         Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
@@ -284,7 +286,7 @@ public class GalleriesInterface {
             parameters.put("page", String.valueOf(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -347,7 +349,7 @@ public class GalleriesInterface {
             parameters.put("page", String.valueOf(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }

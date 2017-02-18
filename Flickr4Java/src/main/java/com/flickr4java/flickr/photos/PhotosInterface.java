@@ -197,7 +197,7 @@ public class PhotosInterface {
 
         parameters.put("photo_id", photoId);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -261,17 +261,17 @@ public class PhotosInterface {
         if (count > 0) {
             parameters.put("count", Integer.toString(count));
         }
+        if (includeSelf) {
+            parameters.put("include_self", "1");
+        }
         if (justFriends) {
             parameters.put("just_friends", "1");
         }
         if (singlePhoto) {
             parameters.put("single_photo", "1");
         }
-        if (includeSelf) {
-            parameters.put("include_self", "1");
-        }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -346,7 +346,7 @@ public class PhotosInterface {
             parameters.put(Extras.KEY_EXTRAS, sb.toString());
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -379,7 +379,7 @@ public class PhotosInterface {
 
         parameters.put("photo_id", photoId);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -445,7 +445,7 @@ public class PhotosInterface {
             parameters.put("taken_dates", StringUtilities.join(takenDateList, ","));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -485,7 +485,7 @@ public class PhotosInterface {
             parameters.put("secret", secret);
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -531,7 +531,7 @@ public class PhotosInterface {
             parameters.put("page", Integer.toString(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -573,7 +573,7 @@ public class PhotosInterface {
             parameters.put("secret", secret);
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -614,7 +614,7 @@ public class PhotosInterface {
             parameters.put("page", Integer.toString(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -648,7 +648,7 @@ public class PhotosInterface {
 
         parameters.put("photo_id", photoId);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -692,7 +692,7 @@ public class PhotosInterface {
             parameters.put("page", Integer.toString(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -739,7 +739,7 @@ public class PhotosInterface {
 
         parameters.put("photo_id", photoId);
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -783,7 +783,7 @@ public class PhotosInterface {
             parameters.put("page", Integer.toString(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -863,7 +863,7 @@ public class PhotosInterface {
             parameters.put("page", Integer.toString(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -943,7 +943,7 @@ public class PhotosInterface {
             parameters.put("page", Integer.toString(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -987,7 +987,7 @@ public class PhotosInterface {
             parameters.put("page", Integer.toString(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -1044,7 +1044,7 @@ public class PhotosInterface {
             parameters.put("page", "" + page);
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
@@ -1089,7 +1089,7 @@ public class PhotosInterface {
             parameters.put("page", Integer.toString(page));
         }
 
-        Response response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret);
+        Response response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret);
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }

@@ -20,6 +20,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Upload a photo.
@@ -190,7 +193,12 @@ public class Uploader {
      * @throws FlickrException
      */
     private UploaderResponse postPhoto(Map<String, Object> parameters, String path) throws FlickrException {
-        UploaderResponse response = (UploaderResponse) transport.post(path, parameters, apiKey, sharedSecret, true);
+        UploaderResponse response = null;
+        try {
+            response = (UploaderResponse) transport.post(path, parameters, apiKey, sharedSecret, true);
+        } catch (Exception e) {
+            throw new FlickrRuntimeException(e);
+        }
         if (response.isError()) {
             throw new FlickrException(response.getErrorCode(), response.getErrorMessage());
         }
