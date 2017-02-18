@@ -262,12 +262,12 @@ public class GalleriesInterface {
      */
     public Gallery create(String strTitle, String strDescription, String primaryPhotoId) throws FlickrException {
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("method", METHOD_CREATE);
-        parameters.put("title", strTitle);
         parameters.put("description", strDescription);
+        parameters.put("method", METHOD_CREATE);
         if (primaryPhotoId != null) {
             parameters.put("primary_photo_id ", primaryPhotoId);
         }
+        parameters.put("title", strTitle);
 
         Response response = null;
         try {
@@ -337,7 +337,7 @@ public class GalleriesInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -407,7 +407,7 @@ public class GalleriesInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {

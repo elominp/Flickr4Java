@@ -74,7 +74,7 @@ public class GeoInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -118,7 +118,7 @@ public class GeoInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -358,7 +358,7 @@ public class GeoInterface {
         parameters.put("accuracy", Integer.toString(location.getAccuracy()));
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {

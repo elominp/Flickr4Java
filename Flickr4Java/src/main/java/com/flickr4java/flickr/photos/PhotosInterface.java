@@ -215,7 +215,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -284,19 +284,19 @@ public class PhotosInterface {
         if (count > 0) {
             parameters.put("count", Integer.toString(count));
         }
+        if (includeSelf) {
+            parameters.put("include_self", "1");
+        }
         if (justFriends) {
             parameters.put("just_friends", "1");
         }
         if (singlePhoto) {
             parameters.put("single_photo", "1");
         }
-        if (includeSelf) {
-            parameters.put("include_self", "1");
-        }
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -378,7 +378,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -418,7 +418,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -491,7 +491,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -538,7 +538,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -591,7 +591,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -640,7 +640,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -688,7 +688,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -729,7 +729,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -780,7 +780,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -834,7 +834,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -885,7 +885,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -972,7 +972,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -1059,7 +1059,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -1110,7 +1110,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -1181,7 +1181,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -1233,7 +1233,7 @@ public class PhotosInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {

@@ -68,13 +68,12 @@ public class UrlsInterface {
      */
     public String getGroup(String groupId) throws FlickrException {
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("method", METHOD_GET_GROUP);
-
         parameters.put("group_id", groupId);
+        parameters.put("method", METHOD_GET_GROUP);
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -104,7 +103,7 @@ public class UrlsInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -134,7 +133,7 @@ public class UrlsInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -164,7 +163,7 @@ public class UrlsInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -198,7 +197,7 @@ public class UrlsInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
@@ -229,7 +228,7 @@ public class UrlsInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {

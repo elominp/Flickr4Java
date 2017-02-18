@@ -113,7 +113,7 @@ public class TestInterface {
 
         Response response = null;
         try {
-            response = transport.get(transport.getPath(), parameters, apiKey, sharedSecret).get();
+            response = transport.post(transport.getPath(), parameters, apiKey, sharedSecret).get();
         } catch (InterruptedException e) {
             throw new FlickrRuntimeException(e);
         } catch (ExecutionException e) {
