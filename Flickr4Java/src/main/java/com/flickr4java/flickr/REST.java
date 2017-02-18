@@ -33,8 +33,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Transport implementation using the REST interface.
@@ -63,6 +68,9 @@ public class REST extends Transport {
     private Integer connectTimeoutMs;
 
     private Integer readTimeoutMs;
+
+    private ExecutorService executor = Executors.newFixedThreadPool(1);
+    private int requestTimeoutMs = 30000;
 
     /**
      * Construct a new REST transport instance.
@@ -145,9 +153,9 @@ public class REST extends Transport {
      * @return The Response
      */
     @Override
-    public com.flickr4java.flickr.Response get(String path, Map<String, Object> parameters, String apiKey, String sharedSecret) {
+    public Response get(String path, Map<String, Object> parameters, String apiKey, String sharedSecret) {
 
-        OAuthRequest request = new OAuthRequest(Verb.GET, getScheme() + "://" + getHost() + path);
+        final OAuthRequest request = new OAuthRequest(Verb.GET, getScheme() + "://" + getHost() + path);
         for (Map.Entry<String, Object> entry : parameters.entrySet()) {
             request.addQuerystringParameter(entry.getKey(), String.valueOf(entry.getValue()));
         }
@@ -173,44 +181,57 @@ public class REST extends Transport {
         if (Flickr.debugRequest) {
             logger.debug("GET: " + request.getCompleteUrl());
         }
-        setTimeouts(request);
-        OAuthService service = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret).build(FlickrApi.instance());
+
+        final OAuthService service = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret).build(FlickrApi.instance());
         service.signRequest(new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret()), request);
-        com.github.scribejava.core.model.Response scribeResponse = null;
-        try {
-            scribeResponse = service.execute(request);
-        } catch (InterruptedException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (IOException e) {
-            throw new FlickrRuntimeException(e);
-        }
 
-        try {
+        Callable<Response> getRequest = new Callable<Response>() {
+            @Override
+            public Response call() throws Exception {
+                com.github.scribejava.core.model.Response scribeResponse = null;
+                try {
+                    scribeResponse = service.execute(request);
+                } catch (InterruptedException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (IOException e) {
+                    throw new FlickrRuntimeException(e);
+                }
 
-            com.flickr4java.flickr.Response response = null;
-            synchronized (mutex) {
-                String strXml = scribeResponse.getBody().trim();
-                if (Flickr.debugStream) {
-                    logger.debug(strXml);
+                try {
+
+                    Response response = null;
+                    synchronized (mutex) {
+                        String strXml = scribeResponse.getBody().trim();
+                        if (Flickr.debugStream) {
+                            logger.debug(strXml);
+                        }
+                        if (strXml.startsWith("oauth_problem=")) {
+                            throw new FlickrRuntimeException(strXml);
+                        }
+                        Document document = builder.parse(new InputSource(new StringReader(strXml)));
+                        response = (Response) responseClass.newInstance();
+                        response.parse(document);
+                    }
+                    return response;
+                } catch (IllegalAccessException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (InstantiationException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (SAXException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (IOException e) {
+                    throw new FlickrRuntimeException(e);
                 }
-                if (strXml.startsWith("oauth_problem=")) {
-                    throw new FlickrRuntimeException(strXml);
-                }
-                Document document = builder.parse(new InputSource(new StringReader(strXml)));
-                response = (com.flickr4java.flickr.Response) responseClass.newInstance();
-                response.parse(document);
             }
-            return response;
-        } catch (IllegalAccessException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (SAXException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (IOException e) {
-            throw new FlickrRuntimeException(e);
+        };
+
+        try {
+            return executor.submit(getRequest).get(requestTimeoutMs, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -226,45 +247,57 @@ public class REST extends Transport {
      * @return The Response
      */
     @Override
-    public Response getNonOAuth(String path, Map<String, String> parameters) {
-        InputStream in = null;
+    public Response getNonOAuth(final String path, final Map<String, String> parameters) {
+        Callable<Response> getNonOAuthRequest = new Callable<Response>() {
+            @Override
+            public Response call() throws Exception {
+                InputStream in = null;
+                try {
+                    URL url = UrlUtilities.buildUrl(getScheme(), getHost(), getPort(), path, parameters);
+                    if (Flickr.debugRequest) {
+                        logger.debug("GET: " + url);
+                    }
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+                    if (proxyAuth) {
+                        conn.setRequestProperty("Proxy-Authorization", "Basic " + getProxyCredentials());
+                    }
+                    setTimeouts(conn);
+                    conn.connect();
+
+                    if (Flickr.debugStream) {
+                        in = new DebugInputStream(conn.getInputStream(), System.out);
+                    } else {
+                        in = conn.getInputStream();
+                    }
+
+                    Response response = null;
+                    synchronized (mutex) {
+                        Document document = builder.parse(in);
+                        response = (Response) responseClass.newInstance();
+                        response.parse(document);
+                    }
+                    return response;
+                } catch (IllegalAccessException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (InstantiationException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (IOException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (SAXException e) {
+                    throw new FlickrRuntimeException(e);
+                } finally {
+                    IOUtilities.close(in);
+                }
+            }
+        };
+
         try {
-            URL url = UrlUtilities.buildUrl(getScheme(), getHost(), getPort(), path, parameters);
-            if (Flickr.debugRequest) {
-                logger.debug("GET: " + url);
-            }
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            if (proxyAuth) {
-                conn.setRequestProperty("Proxy-Authorization", "Basic " + getProxyCredentials());
-            }
-            setTimeouts(conn);
-            conn.connect();
-
-            if (Flickr.debugStream) {
-                in = new DebugInputStream(conn.getInputStream(), System.out);
-            } else {
-                in = conn.getInputStream();
-            }
-
-            Response response = null;
-            synchronized (mutex) {
-                Document document = builder.parse(in);
-                response = (Response) responseClass.newInstance();
-                response.parse(document);
-            }
-            return response;
-        } catch (IllegalAccessException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (IOException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (SAXException e) {
-            throw new FlickrRuntimeException(e);
-        } finally {
-            IOUtilities.close(in);
+            return executor.submit(getNonOAuthRequest).get(requestTimeoutMs, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**
@@ -277,9 +310,9 @@ public class REST extends Transport {
      * @return The Response object
      */
     @Override
-    public com.flickr4java.flickr.Response post(String path, Map<String, Object> parameters, String apiKey, String sharedSecret, boolean multipart) {
+    public Response post(String path, Map<String, Object> parameters, String apiKey, String sharedSecret, boolean multipart) {
 
-        OAuthRequest request = new OAuthRequest(Verb.POST, getScheme() + "://" + getHost() + path);
+        final OAuthRequest request = new OAuthRequest(Verb.POST, getScheme() + "://" + getHost() + path);
 
         if (multipart) {
             buildMultipartRequest(parameters, request);
@@ -309,44 +342,50 @@ public class REST extends Transport {
             logger.debug("POST: " + request.getCompleteUrl());
         }
 
-        setTimeouts(request);
-        OAuthService service = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret).build(FlickrApi.instance());
+        final OAuthService service = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret).build(FlickrApi.instance());
         service.signRequest(new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret()), request);
-        com.github.scribejava.core.model.Response scribeResponse = null;
-        try {
-            scribeResponse = service.execute(request);
-        } catch (InterruptedException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (IOException e) {
-            throw new FlickrRuntimeException(e);
-        }
+
+        Callable<Response> postRequest = new Callable<Response>() {
+            @Override
+            public Response call() throws Exception {
+                com.github.scribejava.core.model.Response scribeResponse = null;
+                try {
+                    scribeResponse = service.execute(request);
+                } catch (InterruptedException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (ExecutionException e) {
+                    throw new FlickrRuntimeException(e);
+                } catch (IOException e) {
+                    throw new FlickrRuntimeException(e);
+                }
+
+                try {
+                    com.flickr4java.flickr.Response response = null;
+                    synchronized (mutex) {
+                        String strXml = scribeResponse.getBody().trim();
+                        if (Flickr.debugStream) {
+                            logger.debug(strXml);
+                        }
+                        if (strXml.startsWith("oauth_problem=")) {
+                            throw new FlickrRuntimeException(strXml);
+                        }
+                        Document document = builder.parse(new InputSource(new StringReader(strXml)));
+                        response = (com.flickr4java.flickr.Response) responseClass.newInstance();
+                        response.parse(document);
+                    }
+                    return response;
+                } catch (Exception e) {
+                    throw new FlickrRuntimeException(e);
+                }
+            }
+        };
 
         try {
-            com.flickr4java.flickr.Response response = null;
-            synchronized (mutex) {
-                String strXml = scribeResponse.getBody().trim();
-                if (Flickr.debugStream) {
-                    logger.debug(strXml);
-                }
-                if (strXml.startsWith("oauth_problem=")) {
-                    throw new FlickrRuntimeException(strXml);
-                }
-                Document document = builder.parse(new InputSource(new StringReader(strXml)));
-                response = (com.flickr4java.flickr.Response) responseClass.newInstance();
-                response.parse(document);
-            }
-            return response;
-        } catch (IllegalAccessException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (SAXException e) {
-            throw new FlickrRuntimeException(e);
-        } catch (IOException e) {
-            throw new FlickrRuntimeException(e);
+            return executor.submit(postRequest).get(requestTimeoutMs, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
     /**
@@ -471,16 +510,6 @@ public class REST extends Transport {
         if (readTimeoutMs != null) {
             conn.setReadTimeout(readTimeoutMs);
         }
-    }
-
-    private void setTimeouts(OAuthRequest request) {
-        // TODO : Need to handle timeouts when bringing future as scribejava now use modern concurrency
-        /* if (connectTimeoutMs != null) {
-            request.setConnectTimeout(connectTimeoutMs, TimeUnit.MILLISECONDS);
-        }
-        if (readTimeoutMs != null) {
-            request.setReadTimeout(readTimeoutMs, TimeUnit.MILLISECONDS);
-        } */
     }
 
     public void setConnectTimeoutMs(Integer connectTimeoutMs) {
