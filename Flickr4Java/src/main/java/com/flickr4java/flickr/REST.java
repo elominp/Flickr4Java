@@ -315,11 +315,10 @@ public class REST extends Transport {
 
         RequestContext requestContext = RequestContext.getRequestContext();
         Auth auth = requestContext.getAuth();
-        if (auth != null) {
-            Token accessToken = new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret());
-            OAuthService service = createOAuthService(parameters, apiKey, sharedSecret);
-            service.signRequest(accessToken, request);
-        }
+        if (auth == null)
+            return null;
+        Token accessToken = new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret());
+        final OAuthService service = createOAuthService(parameters, apiKey, sharedSecret);
 
         if (multipart) {
             // Ensure all parameters (including oauth) are added to payload so signature matches
@@ -335,8 +334,7 @@ public class REST extends Transport {
             logger.debug("POST: " + request.getCompleteUrl());
         }
 
-        final OAuthService service = new ServiceBuilder().apiKey(apiKey).apiSecret(sharedSecret).build(FlickrApi.instance());
-        service.signRequest(new OAuth1AccessToken(auth.getToken(), auth.getTokenSecret()), request);
+        service.signRequest(accessToken, request);
 
         Callable<Response> postRequest = new Callable<Response>() {
             @Override
